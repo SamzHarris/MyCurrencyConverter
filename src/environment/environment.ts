@@ -4,6 +4,6 @@ export class Environment {
 };
 
 export const environment: Environment = {
-    fixerUrl: 'https://api.apilayer.com/fixer/symbols',
+    fixerUrl: 'https://api.apilayer.com/fixer',
     fixerApiKey: 'asOI2naHRNOb0twXnIqbUoSKqwu7SQoV'
 };

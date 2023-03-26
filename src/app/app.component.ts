@@ -27,13 +27,21 @@ export class AppComponent {
         });
       }
     );
-  }
-
-  selectCurrency() {
-    console.log("selected")
+    //TODO Select default currencies
   }
 
   convertAmount() {
+    this.currencyService.convertCurrency(this.toCurrencyCode, this.fromCurrencyCode, this.amount).subscribe(
+      (res) => {
+        let currencyList: any = res;
+        Object.entries(currencyList.symbols).forEach(([key, value]) => {
+          let currencyObj = new Currency();
+          currencyObj.code = key;
+          currencyObj.name = <string>value;
+          this.currencyList.push(currencyObj)
+        });
+      }
+    );
     this.convertedAmount = this.amount;
   }
 }
