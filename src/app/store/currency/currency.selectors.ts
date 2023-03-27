@@ -1,0 +1,9 @@
+import { createSelector } from '@ngrx/store';
+import { AppState } from '../app.state';
+import { CurrencyState } from './currency.reducer';
+
+export const selectCurrency = (state: AppState) => state.currency;
+export const selectCurrencyList = createSelector(
+  selectCurrency,
+  (state: CurrencyState) => state.currencyList
+)

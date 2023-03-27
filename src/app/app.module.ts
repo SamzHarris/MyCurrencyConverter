@@ -8,7 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { CurrencyEffect } from './store/currency/currency.effects';
 import { CurrencyReducer } from './store/currency/currency.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-//import { environment } from '../environments/environment';
+import { environment } from '../environment/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -22,11 +22,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     EffectsModule.forRoot([CurrencyEffect]),
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+      StoreDevtoolsModule.instrument({
+          maxAge: 25,
+          logOnly: environment.production,
+      }),
   ],
   exports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

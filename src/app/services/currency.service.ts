@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Item } from '../models/item';
+import { Currency } from '../models/currency';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -16,14 +16,25 @@ export class CurrencyService {
     const headers = new HttpHeaders({'Content-Type' : 'application/json', 'apiKey': environment.fixerApiKey});
     const options = {headers};
     const url = environment.fixerUrl + "/symbols"
-    return this.http.get<Response>(url, options).pipe(
-        map((response: Response) => response),
+    return this.http.get<Array<Currency>>(url, options).pipe(
+        map((currencyList: any) => {
+            let finalCurrencyList: Array<Currency> = [];
+            Object.entries(currencyList.symbols).forEach(([key, value]) => {
+               let currencyObj = new Currency();
+               currencyObj.code = key;
+               currencyObj.name = <string>value;
+               finalCurrencyList.push(currencyObj)
+            });
+            return finalCurrencyList;
+        }),
         catchError(err => {
           console.log(err);
           return of([]);
         })
     );
   }
+
+
 
   convertCurrency(fromCurrency: string, toCurrency: string, amount: number) {
     const headers = new HttpHeaders({'Content-Type' : 'application/json', 'apiKey': environment.fixerApiKey});

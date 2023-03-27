@@ -15,14 +15,14 @@
 
       </div>
       <!-- From Currency -->
-      <div class="col-xs-12 col-md-6 py-2 form-group fs-5">
+      <div class="col-xs-12 col-md-6 py-2 form-group fs-5" >
         <label class="col-xs-12" for="fromCurrencySelect">From</label>
         <select
           [(ngModel)]="fromCurrencyCode"
           class="form-control"
           name="fromCurrencySelect"
           id="fromCurrencySelect">
-          <option *ngFor="let currency of currencyList; let i = index" [ngValue]="currency.code"> {{currency.name}} </option>
+          <option  *ngFor="let currency of currencyList$ | async" [ngValue]="currency.code"> {{currency.name}} </option>
         </select>
       </div>
 
@@ -34,7 +34,7 @@
           class="form-control"
           name="toCurrencySelect"
           id="toCurrencySelect">
-          <option *ngFor="let currency of currencyList; let i = index"  [ngValue]="currency.code"> {{currency.name}} </option>
+          <option *ngFor="let currency of currencyList$ | async"  [ngValue]="currency.code"> {{currency.name}} </option>
         </select>
       </div>
 
