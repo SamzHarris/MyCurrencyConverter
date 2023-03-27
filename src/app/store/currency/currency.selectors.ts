@@ -4,8 +4,8 @@ import { CurrencyState } from './currency.reducer';
 
 export const selectCurrency = (state: AppState) => state.currency;
 export const selectCurrencyList = createSelector(
-  selectCurrency,
-  (state: CurrencyState) => state.currencyList
+    selectCurrency,
+    (state: CurrencyState) => state.currencyList
 )
 
 export const selectToCurrency = createSelector(

@@ -1,4 +1,4 @@
 export class Currency {
-  code: string;
-  name: string;
+    code: string;
+    name: string;
 }

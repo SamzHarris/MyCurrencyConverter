@@ -24,16 +24,16 @@ export class CurrencyEffect {
     ) {}
 
     getCurrencyList$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(getCurrencyList),
-            switchMap(() =>
-                from(this.currencyService.getCurrencyList()).pipe(
-                    map((currencyList) => getCurrencyListSuccess({currencyList: currencyList})),
-                    catchError((error) => of(getCurrencyListFailure(error)))
+            this.actions$.pipe(
+                ofType(getCurrencyList),
+                switchMap(() =>
+                    from(this.currencyService.getCurrencyList()).pipe(
+                        map((currencyList) => getCurrencyListSuccess({currencyList: currencyList})),
+                        catchError((error) => of(getCurrencyListFailure(error)))
+                    )
                 )
-            )
-        ),
-    { dispatch: true }
+            ),
+        { dispatch: true }
     );
 
     calcCurrencyConversion$ = createEffect(() =>

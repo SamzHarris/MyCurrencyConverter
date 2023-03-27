@@ -19,24 +19,14 @@ export const calcCurrencyConversion = createAction(
 );
 
 export const calcCurrencyConversionSuccess = createAction(
-  CurrencyActionTypes.CALCULATE_CURRENCY_CONVERSION_SUCCESS,
-  props< { convertedAmount: number }>()
+    CurrencyActionTypes.CALCULATE_CURRENCY_CONVERSION_SUCCESS,
+    props< { convertedAmount: number }>()
 );
 
 export const calcCurrencyConversionFailure = createAction(
-  CurrencyActionTypes.CALCULATE_CURRENCY_CONVERSION_FAILURE,
-  props<{ error: string; }>(),
+    CurrencyActionTypes.CALCULATE_CURRENCY_CONVERSION_FAILURE,
+    props<{ error: string; }>(),
 );
-
-export const saveToCurrency = createAction(
-    CurrencyActionTypes.SAVE_TO_CURRENCY,
-    props<{ code: string; name: string; }>(),
-)
-
-export const saveFromCurrency = createAction(
-    CurrencyActionTypes.SAVE_FROM_CURRENCY,
-    props<{ code: string; name: string; }>(),
-)
 
 export const getCurrencyList = createAction(
     CurrencyActionTypes.GET_CURRENCY_LIST_REQUEST,
