@@ -1,6 +1,12 @@
 import { createReducer, on, MetaReducer } from '@ngrx/store';
 import { Currency } from '../../models/currency';
-import { getCurrencyList, getCurrencyListSuccess, getCurrencyListFailure } from './currency.actions';
+import {
+    getCurrencyList,
+    getCurrencyListSuccess,
+    getCurrencyListFailure,
+    saveToCurrency,
+    saveFromCurrency,
+} from './currency.actions';
 
 export interface CurrencyState {
   fromCurrency: Currency;
@@ -45,5 +51,15 @@ export const CurrencyReducer = createReducer(
     error: error,
     isLoading: false,
   })),
+    on(saveToCurrency, (state, { code, name }) => ({
+        ...state,
+        toCurrency: { code: code, name: name },
+        isLoading: true,
+    })),
+    on(saveFromCurrency, (state, { code, name }) => ({
+        ...state,
+        fromCurrency: { code: code, name: name },
+        isLoading: true,
+    })),
 );
 

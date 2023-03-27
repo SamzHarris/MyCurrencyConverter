@@ -7,3 +7,12 @@ export const selectCurrencyList = createSelector(
   selectCurrency,
   (state: CurrencyState) => state.currencyList
 )
+
+export const selectToCurrency = createSelector(
+    selectCurrency,
+    (state: CurrencyState) => state.toCurrency
+)
+export const selectFromCurrency = createSelector(
+    selectCurrency,
+    (state: CurrencyState) => state.fromCurrency
+)
