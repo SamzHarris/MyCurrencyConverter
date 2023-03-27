@@ -5,7 +5,7 @@ import {
     getCurrencyListSuccess,
     getCurrencyListFailure,
     saveToCurrency,
-    saveFromCurrency,
+    saveFromCurrency, calcCurrencyConversion, calcCurrencyConversionSuccess, calcCurrencyConversionFailure,
 } from './currency.actions';
 
 export interface CurrencyState {
@@ -46,11 +46,24 @@ export const CurrencyReducer = createReducer(
     currencyList: currencyList,
     isLoading: false,
   })),
-  on(getCurrencyListFailure, (state, { error }) => ({
+  on(getCurrencyListFailure, calcCurrencyConversionFailure, (state, { error }) => ({
     ...state,
     error: error,
     isLoading: false,
   })),
+    on(calcCurrencyConversion, (state, { fromCurrency, toCurrency, amount }) => ({
+        ...state,
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+        amount: amount,
+        isLoading: true,
+    })),
+    on(calcCurrencyConversionSuccess, (state, { convertedAmount }) => ({
+        ...state,
+        error: null,
+        convertedAmount: convertedAmount,
+        isLoading: false,
+    })),
     on(saveToCurrency, (state, { code, name }) => ({
         ...state,
         toCurrency: { code: code, name: name },

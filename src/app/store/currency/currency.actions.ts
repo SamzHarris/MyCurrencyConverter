@@ -14,16 +14,17 @@ export enum CurrencyActionTypes {
 }
 
 export const calcCurrencyConversion = createAction(
-    CurrencyActionTypes.GET_CURRENCY_LIST_REQUEST,
+    CurrencyActionTypes.CALCULATE_CURRENCY_CONVERSION,
+    props<{fromCurrency: Currency, toCurrency: Currency, amount: number}>(),
 );
 
 export const calcCurrencyConversionSuccess = createAction(
-  CurrencyActionTypes.GET_CURRENCY_LIST_SUCCESS,
-  props< { currencyList: Array<Currency> }>()
+  CurrencyActionTypes.CALCULATE_CURRENCY_CONVERSION_SUCCESS,
+  props< { convertedAmount: number }>()
 );
 
 export const calcCurrencyConversionFailure = createAction(
-  CurrencyActionTypes.GET_CURRENCY_LIST_FAILURE,
+  CurrencyActionTypes.CALCULATE_CURRENCY_CONVERSION_FAILURE,
   props<{ error: string; }>(),
 );
 

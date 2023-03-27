@@ -34,7 +34,7 @@
           class="form-control"
           name="toCurrencySelect"
           id="toCurrencySelect">
-          <option *ngFor="let currency of currencyList$ | async" [ngValue]="currency.code"> {{currency.name}} </option>
+          <option *ngFor="let currency of currencyList$ | async" [ngValue]="currency"> {{currency.name}} </option>
         </select>
       </div>
 

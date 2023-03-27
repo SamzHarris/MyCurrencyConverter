@@ -1,13 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { combineLatestWith, Observable } from 'rxjs';
 import { Currency } from './models/currency';
 import { CurrencyService } from './services/currency.service';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/app.state';
-import { getCurrencyList, saveFromCurrency } from './store/currency/currency.actions';
+import {
+    calcCurrencyConversion,
+    getCurrencyList,
+    saveFromCurrency,
+    saveToCurrency,
+} from './store/currency/currency.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { selectCurrencyList, selectFromCurrency, selectToCurrency } from './store/currency/currency.selectors';
+import {
+    selectConvertedAmount,
+    selectCurrencyList,
+    selectFromCurrency,
+    selectToCurrency,
+} from './store/currency/currency.selectors';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,7 +26,7 @@ import { selectCurrencyList, selectFromCurrency, selectToCurrency } from './stor
 
 
 @UntilDestroy()
-export class AppComponent {
+export class AppComponent implements OnInit{
     public currencyList$ = this.store$.select(selectCurrencyList);
   title = 'MyCurrencyConverter';
   fromCurrency: Currency;
@@ -31,6 +41,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.store$.dispatch(getCurrencyList())
+      //todo join the two selectors
       this.store$.select(selectToCurrency).subscribe( (toCurrency) =>
           this.toCurrency = toCurrency
       )
@@ -40,16 +51,14 @@ export class AppComponent {
   }
 
   convertAmount() {
-      this.store$.dispatch(saveFromCurrency(this.fromCurrency))
-      //dispatch to update the states with to and from currency
-      //want to call the dispatch
-    // this.currencyService.convertCurrency(this.toCurrencyCode, this.fromCurrencyCode, this.amount).subscribe(
-    //   (res) => {
-    //
-    //   }
-    // );
-    this.convertedAmount = this.amount;
+      this.store$.dispatch(calcCurrencyConversion({
+          toCurrency: this.toCurrency,
+          fromCurrency: this.fromCurrency,
+          amount: this.amount
+      }));
+      this.store$.select(selectConvertedAmount).subscribe((amount) => {
+              this.convertedAmount = amount;
+              console.log(amount)
+      });
   }
 }
-
-//TODO Select default currencies

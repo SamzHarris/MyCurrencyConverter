@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Currency } from '../../models/currency';
 import { AppState } from '../app.state';
 import {
+    calcCurrencyConversion, calcCurrencyConversionFailure, calcCurrencyConversionSuccess,
     CurrencyActionTypes,
     getCurrencyList,
     getCurrencyListFailure,
@@ -33,5 +34,18 @@ export class CurrencyEffect {
             )
         ),
     { dispatch: true }
+    );
+
+    calcCurrencyConversion$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(calcCurrencyConversion),
+                switchMap((action) =>
+                    from(this.currencyService.convertCurrency(action.fromCurrency?.code, action.toCurrency?.code, action.amount)).pipe(
+                        map((convertedAmount) => calcCurrencyConversionSuccess({convertedAmount: convertedAmount})),
+                        catchError((error) => of(calcCurrencyConversionFailure(error)))
+                    )
+                )
+            ),
+        { dispatch: true }
     );
 }

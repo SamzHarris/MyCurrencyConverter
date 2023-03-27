@@ -16,3 +16,8 @@ export const selectFromCurrency = createSelector(
     selectCurrency,
     (state: CurrencyState) => state.fromCurrency
 )
+
+export const selectConvertedAmount = createSelector(
+    selectCurrency,
+    (state: CurrencyState) => state.convertedAmount
+)
