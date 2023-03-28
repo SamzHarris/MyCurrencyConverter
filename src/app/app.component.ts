@@ -24,11 +24,10 @@ import {
 
 @UntilDestroy()
 export class AppComponent implements OnInit{
-    public currencyList$ = this.store$.select(selectCurrencyList);
     public isLoading$ = this.store$.select(selectIsLoading);
     currencyForm = new FormGroup({
-        toCurrencySelect: new FormControl(''),
-        fromCurrencySelect: new FormControl(''),
+        toCurrencySelect: new FormControl({value: '', disabled: true}),
+        fromCurrencySelect: new FormControl({value:'', disabled: true}),
         amountInput: new FormControl(''),
     });
     title = 'MyCurrencyConverter';
@@ -36,36 +35,52 @@ export class AppComponent implements OnInit{
     toCurrency: Currency;
     amount: number;
     convertedAmount: number = 0.00;
+    currencyLoader: boolean = false;
+    currencyList: Array<Currency> = [];
 
     constructor(
-        private currencyService: CurrencyService,
         public store$: Store<AppState>) {
     }
 
     ngOnInit(): void {
-        this.store$.dispatch(getCurrencyList())
+        this.store$.dispatch(getCurrencyList());
+        this.store$.select(selectCurrencyList).subscribe((currencyList) =>
+            {
+                if (currencyList.length > 0) {
+                    this.currencyList = currencyList
+                    this.currencyForm.controls['toCurrencySelect'].enable();
+                    this.currencyForm.controls['fromCurrencySelect'].enable();
+                }
+            }
+        );
         //todo join the two selectors
-        this.store$.select(selectToCurrency).subscribe( (toCurrency) =>
-            this.toCurrency = toCurrency
-        )
-        this.store$.select(selectFromCurrency).subscribe( (fromCurrency) =>
-            this.fromCurrency = fromCurrency
-        )
+        // this.store$.select(selectToCurrency).subscribe( (toCurrency) =>
+        // {
+        //     this.toCurrency = toCurrency;
+        // })
+        // this.store$.select(selectFromCurrency).subscribe( (fromCurrency) => {
+        //         this.fromCurrency = fromCurrency;
+        // })
     }
 
     convertAmount() {
+        this.currencyLoader = true;
         this.store$.dispatch(calcCurrencyConversion({
             toCurrency: this.toCurrency,
             fromCurrency: this.fromCurrency,
             amount: this.amount
         }));
+        this.convertedAmount = 0;
         this.store$.select(selectConvertedAmount).subscribe((amount) => {
-            this.convertedAmount = amount;
+            this.convertedAmount = amount || 0;
+            this.currencyLoader = true;
         });
+    }
+
+    updateConvertedAmount() {
+        this.convertedAmount = 0;
     }
 }
 //TODO fix indentation
-//TODO Check for syntax
 //TODO Update the FE to default the drop downs
 //TODO test validations
-//TODO add loaders

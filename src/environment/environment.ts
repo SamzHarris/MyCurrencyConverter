@@ -6,6 +6,6 @@ export class Environment {
 
 export const environment: Environment = {
     fixerUrl: 'https://api.apilayer.com/fixer',
-    fixerApiKey: 'drz4Li6yU069l18fnL1r8eLUWYI4QZrg',
+    fixerApiKey: 'asOI2naHRNOb0twXnIqbUoSKqwu7SQoV',
     production: false,
 };

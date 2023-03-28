@@ -8,15 +8,11 @@
 
     <div class="content row" role="main">
         <form [formGroup]="currencyForm" *ngrxLet="isLoading$; let isLoading">
-            <div *ngIf="isLoading" class="row justify-content-center">
-                <div  class="spinner-border m-5" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-            <div *ngIf="!isLoading">
-                <h1>{{fromCurrency?.code}} to {{toCurrency?.code}} </h1>
 
-                <div class="content-card row my-4 py-3">
+
+            <div>
+                <h1>Convert your currency </h1>
+                <div class="content-card row my-4 py-3" >
                     <!--   Amount   -->
                     <div class="col-xs-12 form-group fs-5">
                         <label for="inpAmount">Enter in amount</label>
@@ -33,7 +29,7 @@
                             id="fromCurrencySelect"
                             formControlName="fromCurrencySelect"
                             required>
-                            <option  *ngFor="let currency of currencyList$ | async" [ngValue]="currency" selected="currency == fromCurrency?.code"> {{currency.name}} </option>
+                            <option  *ngFor="let currency of currencyList" [ngValue]="currency"> {{currency.name}} </option>
                         </select>
                     </div>
 
@@ -42,12 +38,13 @@
                         <label class="col-xs-12" for="toCurrencySelect">To</label>
                         <select
                             [(ngModel)]="toCurrency"
+                            (change)="updateConvertedAmount()"
                             class="form-control"
                             name="toCurrencySelect"
                             id="toCurrencySelect"
                             formControlName="toCurrencySelect"
                             required>
-                            <option *ngFor="let currency of currencyList$ | async" [ngValue]="currency"> {{currency.name}} </option>
+                            <option *ngFor="let currency of currencyList" [ngValue]="currency"> {{currency.name}} </option>
                         </select>
                     </div>
 
@@ -59,9 +56,15 @@
                     <!--   Converted Amount   -->
                     <div class="col-xs-12 py-2 fs-3 form-group">
                         <span class="col-xs-6">Converted Amount:</span>
-                        <div class="col-xs-6">
-                            <span class="px-1" >{{toCurrency?.code}}</span>
+                        <div class="col-xs-6" *ngIf="toCurrency && convertedAmount != 0">
+                            <span class="px-1">{{toCurrency.code}}</span>
                             <span>{{convertedAmount}}</span>
+                        </div>
+                    </div>
+                    <!--    Currency Loader    -->
+                    <div *ngIf="currencyLoader" class="row justify-content-center">
+                        <div  class="spinner-border m-5" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
                 </div>

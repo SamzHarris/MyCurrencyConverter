@@ -13,18 +13,18 @@ export interface CurrencyState {
     isLoading: boolean;
     currencyList: Array<Currency>
     amount: number;
-    convertedAmount: number;
+    convertedAmount?: number;
     error: string | null;
 }
 
 export const initialState: CurrencyState = {
     fromCurrency: {
-        code : 'ZAR',
-        name : 'South African Rands'
+        code : '',
+        name : ''
     },
     toCurrency: {
-        code : 'GBP',
-        name : 'Great British Pounds'
+        code : '',
+        name : ''
     },
     isLoading: true,
     currencyList: [],

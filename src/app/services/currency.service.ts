@@ -39,7 +39,7 @@ export class CurrencyService {
     convertCurrency(fromCurrency: string, toCurrency: string, amount: number) {
         const headers = new HttpHeaders({'Content-Type' : 'application/json', 'apiKey': environment.fixerApiKey});
         const options = {headers};
-        const url = `${environment.fixerUrl}/convert1?to=${toCurrency}&from=${fromCurrency}&amount=${amount?.toString()}`;
+        const url = `${environment.fixerUrl}/convert?to=${toCurrency}&from=${fromCurrency}&amount=${amount?.toString()}`;
         return this.http.get<number>(url, options).pipe(
             map((response: any) => {
                 return response.result;
