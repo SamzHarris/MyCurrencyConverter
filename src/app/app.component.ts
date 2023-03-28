@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Actions, ofType } from '@ngrx/effects';
-import { combineLatestWith, Observable } from 'rxjs';
 import { Currency } from './models/currency';
 import { CurrencyService } from './services/currency.service';
 import { Store } from '@ngrx/store';
@@ -10,11 +8,11 @@ import {
     calcCurrencyConversion,
     getCurrencyList,
 } from './store/currency/currency.actions';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import {
     selectConvertedAmount,
     selectCurrencyList,
-    selectFromCurrency,
+    selectFromCurrency, selectIsLoading,
     selectToCurrency,
 } from './store/currency/currency.selectors';
 @Component({
@@ -27,10 +25,11 @@ import {
 @UntilDestroy()
 export class AppComponent implements OnInit{
     public currencyList$ = this.store$.select(selectCurrencyList);
+    public isLoading$ = this.store$.select(selectIsLoading);
     currencyForm = new FormGroup({
-        toCurrency: new FormControl(''),
-        fromCurrency: new FormControl(''),
-        amount: new FormControl(''),
+        toCurrencySelect: new FormControl(''),
+        fromCurrencySelect: new FormControl(''),
+        amountInput: new FormControl(''),
     });
     title = 'MyCurrencyConverter';
     fromCurrency: Currency;
@@ -62,12 +61,11 @@ export class AppComponent implements OnInit{
         }));
         this.store$.select(selectConvertedAmount).subscribe((amount) => {
             this.convertedAmount = amount;
-            console.log(amount)
         });
     }
 }
 //TODO fix indentation
 //TODO Check for syntax
 //TODO Update the FE to default the drop downs
-//TODO add validations
+//TODO test validations
 //TODO add loaders

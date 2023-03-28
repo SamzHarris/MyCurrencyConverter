@@ -15,7 +15,7 @@ export class CurrencyService {
     getCurrencyList() {
         const headers = new HttpHeaders({'Content-Type' : 'application/json', 'apiKey': environment.fixerApiKey});
         const options = {headers};
-        const url = environment.fixerUrl + "/symbols1"
+        const url = environment.fixerUrl + "/symbols"
         return this.http.get<Array<Currency>>(url, options).pipe(
             map((currencyList: any) => {
                 let finalCurrencyList: Array<Currency> = [];

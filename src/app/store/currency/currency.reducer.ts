@@ -48,7 +48,7 @@ export const CurrencyReducer = createReducer(
     on(getCurrencyListFailure, calcCurrencyConversionFailure, (state, { error }) => ({
         ...state,
         error: error,
-        isLoading: false,
+        isLoading: true,
     })),
     on(calcCurrencyConversion, (state, { fromCurrency, toCurrency, amount }) => ({
         ...state,

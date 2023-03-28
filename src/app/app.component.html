@@ -1,61 +1,71 @@
-<!-- Toolbar -->
 <div>
+    <!-- Toolbar -->
     <div class="toolbar" role="banner">
         <span class="px-3 font-weight-bold fs-3">M C C</span>
         <span class="px-2">My Currency Converter</span>
     </div>
 
+
     <div class="content row" role="main">
-        <form [formGroup]="currencyForm">
-            <h1>{{fromCurrency?.code}} to {{toCurrency?.code}} </h1>
-            <div class="content-card row my-4 py-3">
-                <!--   Amount   -->
-                <div class="col-xs-12 form-group fs-5">
-                    <label for="amount">Enter in amount</label>
-                    <input [(ngModel)]="amount" required id="amount" class="form-control">
-
+        <form [formGroup]="currencyForm" *ngrxLet="isLoading$; let isLoading">
+            <div *ngIf="isLoading" class="row justify-content-center">
+                <div  class="spinner-border m-5" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
-                <!-- From Currency -->
-                <div class="col-xs-12 col-md-6 py-2 form-group fs-5" >
-                    <label class="col-xs-12" for="fromCurrencySelect">From</label>
-                    <select
-                        [(ngModel)]="fromCurrency"
-                        class="form-control"
-                        name="fromCurrencySelect"
-                        id="fromCurrencySelect"
-                        required>
-                        <option  *ngFor="let currency of currencyList$ | async" [ngValue]="currency"> {{currency.name}} </option>
-                    </select>
-                </div>
+            </div>
+            <div *ngIf="!isLoading">
+                <h1>{{fromCurrency?.code}} to {{toCurrency?.code}} </h1>
 
-                <!-- To Currency -->
-                <div class="col-xs-12 col-md-6 py-2 form-group fs-5">
-                    <label class="col-xs-12" for="toCurrencySelect">To</label>
-                    <select
-                        [(ngModel)]="toCurrency"
-                        class="form-control"
-                        name="toCurrencySelect"
-                        id="toCurrencySelect"
-                        required>
-                        <option *ngFor="let currency of currencyList$ | async" [ngValue]="currency"> {{currency.name}} </option>
-                    </select>
-                </div>
+                <div class="content-card row my-4 py-3">
+                    <!--   Amount   -->
+                    <div class="col-xs-12 form-group fs-5">
+                        <label for="inpAmount">Enter in amount</label>
+                        <input [(ngModel)]="amount" required id="inpAmount" class="form-control" formControlName="amountInput">
+                    </div>
 
-                <!--   Convert Button   -->
-                <div class="col-xs-3 form-group py-3 text-center">
-                    <button (click)="convertAmount()" type="button" class="btn btn-dark btn-lg" [disabled]="!ngForm.valid">Convert Amount</button>
-                </div>
+                    <!-- From Currency -->
+                    <div class="col-xs-12 col-md-6 py-2 form-group fs-5" >
+                        <label class="col-xs-12" for="fromCurrencySelect">From</label>
+                        <select
+                            [(ngModel)]="fromCurrency"
+                            class="form-control"
+                            name="fromCurrencySelect"
+                            id="fromCurrencySelect"
+                            formControlName="fromCurrencySelect"
+                            required>
+                            <option  *ngFor="let currency of currencyList$ | async" [ngValue]="currency" selected="currency == fromCurrency?.code"> {{currency.name}} </option>
+                        </select>
+                    </div>
 
-                <!--   Converted Amount   -->
-                <div class="col-xs-12 py-2 fs-3 form-group">
-                    <span class="col-xs-6">Converted Amount:</span>
-                    <div class="col-xs-6">
-                        <span class="px-1" >{{toCurrency?.code}}</span>
-                        <span>{{convertedAmount}}</span>
+                    <!-- To Currency -->
+                    <div class="col-xs-12 col-md-6 py-2 form-group fs-5">
+                        <label class="col-xs-12" for="toCurrencySelect">To</label>
+                        <select
+                            [(ngModel)]="toCurrency"
+                            class="form-control"
+                            name="toCurrencySelect"
+                            id="toCurrencySelect"
+                            formControlName="toCurrencySelect"
+                            required>
+                            <option *ngFor="let currency of currencyList$ | async" [ngValue]="currency"> {{currency.name}} </option>
+                        </select>
+                    </div>
+
+                    <!--   Convert Button   -->
+                    <div class="col-xs-3 form-group py-3 text-center">
+                        <button (click)="convertAmount()" type="button" class="btn btn-dark btn-lg" [disabled]="!currencyForm.valid">Convert Amount</button>
+                    </div>
+
+                    <!--   Converted Amount   -->
+                    <div class="col-xs-12 py-2 fs-3 form-group">
+                        <span class="col-xs-6">Converted Amount:</span>
+                        <div class="col-xs-6">
+                            <span class="px-1" >{{toCurrency?.code}}</span>
+                            <span>{{convertedAmount}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
 </div>
