@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Currency } from './models/currency';
-import { CurrencyService } from './services/currency.service';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/app.state';
 import {
@@ -12,9 +11,8 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import {
     selectConvertedAmount,
     selectCurrencyList,
-    selectFromCurrency, selectIsLoading,
-    selectToCurrency,
-} from './store/currency/currency.selectors';
+    selectIsLoading,
+    } from './store/currency/currency.selectors';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -50,17 +48,10 @@ export class AppComponent implements OnInit{
                     this.currencyList = currencyList
                     this.currencyForm.controls['toCurrencySelect'].enable();
                     this.currencyForm.controls['fromCurrencySelect'].enable();
+                    this.currencyForm.enable();
                 }
             }
         );
-        //todo join the two selectors
-        // this.store$.select(selectToCurrency).subscribe( (toCurrency) =>
-        // {
-        //     this.toCurrency = toCurrency;
-        // })
-        // this.store$.select(selectFromCurrency).subscribe( (fromCurrency) => {
-        //         this.fromCurrency = fromCurrency;
-        // })
     }
 
     convertAmount() {
@@ -70,10 +61,9 @@ export class AppComponent implements OnInit{
             fromCurrency: this.fromCurrency,
             amount: this.amount
         }));
-        this.convertedAmount = 0;
         this.store$.select(selectConvertedAmount).subscribe((amount) => {
             this.convertedAmount = amount || 0;
-            this.currencyLoader = true;
+            this.currencyLoader = false;
         });
     }
 
@@ -81,6 +71,3 @@ export class AppComponent implements OnInit{
         this.convertedAmount = 0;
     }
 }
-//TODO fix indentation
-//TODO Update the FE to default the drop downs
-//TODO test validations

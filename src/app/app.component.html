@@ -16,7 +16,7 @@
                     <!--   Amount   -->
                     <div class="col-xs-12 form-group fs-5">
                         <label for="inpAmount">Enter in amount</label>
-                        <input [(ngModel)]="amount" required id="inpAmount" class="form-control" formControlName="amountInput">
+                        <input [(ngModel)]="amount" required id="inpAmount" class="form-control" formControlName="amountInput" type="number">
                     </div>
 
                     <!-- From Currency -->
@@ -58,7 +58,7 @@
                         <span class="col-xs-6">Converted Amount:</span>
                         <div class="col-xs-6" *ngIf="toCurrency && convertedAmount != 0">
                             <span class="px-1">{{toCurrency.code}}</span>
-                            <span>{{convertedAmount}}</span>
+                            <span>{{convertedAmount | currency:'':''}}</span>
                         </div>
                     </div>
                     <!--    Currency Loader    -->
